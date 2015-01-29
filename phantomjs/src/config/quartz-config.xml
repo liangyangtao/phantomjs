@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<!-- 定义任务 -->
+	<bean id="userQuartzJobBean" class="com.ylx.quartz.UserQuartzJobBean"
+		autowire="byName" />
+	<bean id="keywordQuartzJobBean" class="com.ylx.quartz.KeywordQuartzJobBean"
+		autowire="byName" />
+	<bean id="commentQuartzJobBean" class="com.ylx.quartz.CommentQuartzJobBean"
+		autowire="byName" />
+	<!-- -->
+	<bean id="userquartzJobTask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+
+		<!-- 调用的类 -->
+		<property name="targetObject" ref="userQuartzJobBean">
+		</property>
+		<!-- 调用类中的方法 -->
+		<property name="targetMethod" value="executeInternal">
+		</property>
+		<property name="concurrent" value="false" />
+	</bean>
+	<!-- -->
+	<bean id="keywordquartzJobTask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 调用的类 -->
+		<property name="targetObject" ref="keywordQuartzJobBean">
+		</property>
+		<!-- 调用类中的方法 -->
+		<property name="targetMethod" value="executeInternal">
+		</property>
+		<property name="concurrent" value="false" />
+	</bean>
+	<!-- -->
+	<bean id="commentquartzJobTask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 调用的类 -->
+		<property name="targetObject" ref="commentQuartzJobBean">
+		</property>
+		<!-- 调用类中的方法 -->
+		<property name="targetMethod" value="executeInternal">
+		</property>
+		<property name="concurrent" value="false" />
+	</bean>
+	<!-- 任务触发器 -->
+	<bean id="userquartzTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="userquartzJobTask" />
+		</property>
+		<property name="cronExpression">
+			<value>1 * * * * ?</value>
+		</property>
+	</bean>
+	<bean id="keywordquartzTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="keywordquartzJobTask" />
+		</property>
+		<property name="cronExpression">
+			<value>1 * * * * ?</value>
+		</property>
+	</bean>
+	<bean id="commentquartzTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="commentquartzJobTask" />
+		</property>
+		<property name="cronExpression">
+			<value>1 * * * * ?</value>
+		</property>
+	</bean>
+
+	<!-- 任务调度入口 -->
+	<bean lazy-init="false"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="userquartzTrigger" />
+				<ref bean="keywordquartzTrigger" />
+				<!-- <ref bean="commentquartzTrigger" /> -->
+			</list>
+		</property>
+	</bean>
+</beans>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<!-- 数据库配置 -->
+	<JDBC>
+		<!-- 数据库类型 -->
+		<DRIVERCLASSNAME>com.mysql.jdbc.Driver</DRIVERCLASSNAME>
+		<!-- 数据库名称 craw -->
+		<JDBCURL>jdbc:mysql://192.168.1.169:3307/weibo</JDBCURL>
+		<!-- 数据库用户名 -->
+		<USERNAME>user</USERNAME>
+		<!-- 数据库密码 -->
+		<PASSWORD>123456</PASSWORD>
+	</JDBC>
+</config>
